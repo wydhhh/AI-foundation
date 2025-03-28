@@ -1,5 +1,15 @@
 import heapq
 
+#计算数组的逆序数
+def count_inversions(arr):
+    inversions = 0
+    n = len(arr)
+    for i in range(n):
+        for j in range(i + 1, n):
+            if arr[i] > arr[j] and arr[i] != 'x' and arr[j] != 'x':
+                inversions += 1
+    return inversions
+
 # 计算八个数码的曼哈顿距离之和作为状态的估价函数
 # 该值越大，说明该状态与终态区别越大
 def manhattan_distance(state):
@@ -20,7 +30,7 @@ directions = {'u': (-1, 0), 'd': (1, 0), 'l': (0, -1), 'r': (0, 1)}
 # A* 算法
 def astar(start_state):
     
-    # 记录各个节点从七点开始需要的步数
+    # 记录各个节点从起点开始需要的步数
     dist = {start_state: 0}
     # (曼哈顿距离f值, 状态, 动作路径字符串)的优先队列
     pq = [(manhattan_distance(start_state), start_state, "")]
@@ -59,5 +69,11 @@ def astar(start_state):
 # 读取输入
 start_state = input().replace(" ", "")
 
-# 打印结果
-print(astar(start_state))
+nums = list(start_state)
+inversions = count_inversions(nums) # 计算逆序数
+
+# 输出结果
+if inversions % 2 == 0: # 有解
+    print(astar(start_state)) # 打印结果
+else:                   # 无解
+    print("unsolvable")       # 找不到
